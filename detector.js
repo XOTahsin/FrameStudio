@@ -81,14 +81,26 @@ export async function detectFrameCorners(image) {
   if(peaks.length<4)throw new Error('Could not find four strong frame edges. Try a scene with a clearer frame or set the corners manually.');
   const parallelPairs=[];
   for(let i=0;i<peaks.length;i++)for(let j=i+1;j<peaks.length;j++){
-    const a=peaks[i],b=peaks[j],angleDiff=Math.abs(a.theta-b.theta);
-    if(angleDiff>16||Math.abs(a.rho-b.rho)<Math.min(width,height)*.12)continue;
-    parallelPairs.push({a,b,theta:(a.theta+b.theta)/2,score:a.score+b.score});
+    const a=peaks[i],b=peaks[j];
+    // Hough angles are modulo 180 degrees. Lines at 1° and 179° are
+    // almost parallel, not perpendicular; align their normal signs
+    // before comparing their signed rho offsets.
+    const rawDiff=Math.abs(a.theta-b.theta);
+    const parallelDiff=Math.min(rawDiff,180-rawDiff);
+    if(parallelDiff>16)continue;
+    const normalDot=a.cos*b.cos+a.sin*b.sin;
+    const alignedBRho=normalDot<0?-b.rho:b.rho;
+    if(Math.abs(a.rho-alignedBRho)<Math.min(width,height)*.12)continue;
+    const alignedBTheta=b.theta+(normalDot<0?180:0);
+    const meanTheta=((a.theta+alignedBTheta)/2)%180;
+    parallelPairs.push({a,b,theta:meanTheta,score:a.score+b.score});
   }
   let bestCandidate=null;const areaTotal=width*height;
   for(let i=0;i<parallelPairs.length;i++)for(let j=i+1;j<parallelPairs.length;j++){
-    const A=parallelPairs[i],B=parallelPairs[j],angleDiff=Math.abs(A.theta-B.theta);
-    if(angleDiff<58||angleDiff>122)continue;
+    const A=parallelPairs[i],B=parallelPairs[j];
+    const rawAngleDiff=Math.abs(A.theta-B.theta)%180;
+    const angleDiff=Math.min(rawAngleDiff,180-rawAngleDiff);
+    if(angleDiff<58||angleDiff>90)continue;
     const raw=[lineIntersection(A.a,B.a),lineIntersection(A.b,B.a),lineIntersection(A.b,B.b),lineIntersection(A.a,B.b)];
     if(raw.some(p=>!p||!Number.isFinite(p.x)||!Number.isFinite(p.y)))continue;
     const pts=orderCorners(raw);
