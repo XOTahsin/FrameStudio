@@ -137,18 +137,21 @@ async function loadScene(file) {
 
 
 async function autoDetectCurrentScene({silent=false}={}) {
-  const c=state.creator,button=$('#autoDetectFrame'),status=$('#frameDetectStatus')?.querySelector('span');
+  const c=state.creator,button=$('#autoDetectFrame'),statusBox=$('#frameDetectStatus'),status=statusBox?.querySelector('span');
   if(!c.sceneBitmap){if(!silent)toast('Upload a scenario image first.','error');return false;}
-  if(button){button.disabled=true;button.dataset.originalText=button.innerHTML;button.innerHTML='<i data-icon="refresh-cw"></i> Detecting…';window.refreshIcons(button);}
-  if(status)status.textContent='Analyzing frame borders and perspective lines…';
+  if(button){button.disabled=true;button.dataset.originalText=button.innerHTML;button.innerHTML='<i data-icon="refresh-cw"></i> Scanning…';window.refreshIcons(button);}
+  if(statusBox)statusBox.dataset.state='running';
+  if(status)status.textContent='Analyzing visible frame borders and perspective lines…';
   try {
     const result=await detectFrameCorners(c.sceneBitmap);
     c.corners=result.corners;
     drawCornerEditor();
-    if(status)status.textContent='Frame opening suggested automatically · '+result.confidence+'% confidence. Check the handles before saving.';
+    if(statusBox)statusBox.dataset.state='success';
+    if(status)status.textContent='Frame opening suggested automatically · '+result.confidence+'% confidence. Check the four handles before saving.';
     if(!silent)toast('Frame opening detected ('+result.confidence+'% confidence). Check the four handles.');
     return true;
   } catch(error) {
+    if(statusBox)statusBox.dataset.state='error';
     if(status)status.textContent='Auto-detection could not confirm the frame: '+error.message+' Drag the four corner handles manually.';
     if(!silent)toast(error.message,'error');
     return false;
