@@ -1,6 +1,7 @@
 import { getAllTemplates, saveTemplate, deleteTemplate, clearTemplates, estimateStorage, exportTemplateData, importTemplateData } from './db.js';
 import { renderTemplate } from './renderer.js';
 import { createZip } from './zip.js';
+import { detectFrameCorners } from './detector.js';
 
 const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
@@ -115,7 +116,7 @@ function resetCreator() {
   c.sceneBlob=null;c.sceneBitmap=null;c.sceneName='';c.corners=[[.22,.20],[.78,.20],[.78,.80],[.22,.80]];c.reflectionBlob=null;c.frameOverlayBlob=null;c.editId=null;c.layout=null;c.dragIndex=-1;
   $('#sceneInput').value='';$('#reflectionInput').value='';$('#frameOverlayInput').value='';$('#templateName').value='';$('#templateCategory').value='Living room';$('#templateNotes').value='';
   $('#sceneFileName').textContent='Upload scenario image';$('#sceneFileHint').textContent='A clear, high-resolution scene works best · PNG, JPG, WEBP';
-  updateLayerFileRows();$('#saveTemplateBtn').disabled=true;drawCornerEditor();
+  updateLayerFileRows();$('#saveTemplateBtn').disabled=true;$('#autoDetectFrame').disabled=true;$('#resetCorners').disabled=true;$('#fitScene').disabled=true;$('#frameDetectStatus').querySelector('span').textContent='Upload a scene to attempt automatic frame detection. Always check the four handles and fine-tune them on the inner edge of the frame.';drawCornerEditor();
 }
 
 async function loadScene(file) {
@@ -126,10 +127,34 @@ async function loadScene(file) {
     if(c.sceneBitmap?.close)c.sceneBitmap.close();
     c.sceneBlob=file;c.sceneBitmap=bitmap;c.sceneName=file.name;c.corners=[[.22,.20],[.78,.20],[.78,.80],[.22,.80]];c.reflectionBlob=null;c.frameOverlayBlob=null;c.editId=null;updateLayerFileRows();
     $('#sceneFileName').textContent=file.name;$('#sceneFileHint').textContent=dimsLabel(bitmap.width,bitmap.height);
-    $('#resetCorners').disabled=false;$('#fitScene').disabled=false;$('#saveTemplateBtn').disabled=false;
+    $('#resetCorners').disabled=false;$('#fitScene').disabled=false;$('#autoDetectFrame').disabled=false;$('#saveTemplateBtn').disabled=false;
     if(!$('#templateName').value) $('#templateName').value=file.name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ');
     drawCornerEditor();
+    // Automatically suggest the frame opening after a scenario is loaded.
+    await autoDetectCurrentScene({silent:true});
   }catch(error){toast(`Could not open that image: ${error.message}`,'error');}
+}
+
+
+async function autoDetectCurrentScene({silent=false}={}) {
+  const c=state.creator,button=$('#autoDetectFrame'),status=$('#frameDetectStatus')?.querySelector('span');
+  if(!c.sceneBitmap){if(!silent)toast('Upload a scenario image first.','error');return false;}
+  if(button){button.disabled=true;button.dataset.originalText=button.innerHTML;button.innerHTML='<i data-icon="refresh-cw"></i> Detecting…';window.refreshIcons(button);}
+  if(status)status.textContent='Analyzing frame borders and perspective lines…';
+  try {
+    const result=await detectFrameCorners(c.sceneBitmap);
+    c.corners=result.corners;
+    drawCornerEditor();
+    if(status)status.textContent='Frame opening suggested automatically · '+result.confidence+'% confidence. Check the handles before saving.';
+    if(!silent)toast('Frame opening detected ('+result.confidence+'% confidence). Check the four handles.');
+    return true;
+  } catch(error) {
+    if(status)status.textContent='Auto-detection could not confirm the frame: '+error.message+' Drag the four corner handles manually.';
+    if(!silent)toast(error.message,'error');
+    return false;
+  } finally {
+    if(button){button.disabled=!c.sceneBitmap;button.innerHTML=button.dataset.originalText||'<i data-icon="scan"></i> Auto-detect';window.refreshIcons(button);}
+  }
 }
 
 function getCanvasLayout(bitmap,canvas){
@@ -227,7 +252,7 @@ async function editTemplate(id){
     if(c.sceneBitmap?.close)c.sceneBitmap.close();
     Object.assign(c,{sceneBlob:t.sceneBlob,sceneBitmap:bitmap,sceneName:t.name,corners:t.corners.map(p=>[...p]),reflectionBlob:t.reflectionBlob||null,frameOverlayBlob:t.frameOverlayBlob||null,editId:t.id});
     $('#templateName').value=t.name;$('#templateCategory').value=t.category||'Other';$('#templateNotes').value=t.notes||'';$('#reflectionBlend').value=t.reflectionBlend||'screen';$('#reflectionOpacity').value=t.reflectionOpacity??55;$('#reflectionOpacityLabel').textContent=`${$('#reflectionOpacity').value}%`;
-    $('#sceneFileName').textContent=t.name;$('#sceneFileHint').textContent=dimsLabel(t.width,t.height);$('#saveTemplateBtn').disabled=false;$('#resetCorners').disabled=false;$('#fitScene').disabled=false;updateLayerFileRows();drawCornerEditor();navigate('create');
+    $('#sceneFileName').textContent=t.name;$('#sceneFileHint').textContent=dimsLabel(t.width,t.height);$('#saveTemplateBtn').disabled=false;$('#resetCorners').disabled=false;$('#fitScene').disabled=false;$('#autoDetectFrame').disabled=false;$('#frameDetectStatus').querySelector('span').textContent='Saved corner mapping loaded. Run Auto-detect to re-check the frame opening, or fine-tune the handles manually.';updateLayerFileRows();drawCornerEditor();navigate('create');
   }catch(error){toast(`Could not open template: ${error.message}`,'error');}
 }
 
@@ -365,6 +390,7 @@ function bindEvents(){
   $('#selectAllTemplates').addEventListener('click',()=>{state.templates.forEach(t=>state.selectedTemplates.add(t.id));renderStudioTemplates();schedulePreview();});
   $('#clearTemplates').addEventListener('click',()=>{state.selectedTemplates.clear();renderStudioTemplates();updateGenerateButton();schedulePreview();});
   $('#saveTemplateBtn').addEventListener('click',saveCurrentTemplate);
+  $('#autoDetectFrame').addEventListener('click',()=>autoDetectCurrentScene());
   $('#cancelTemplateBtn').addEventListener('click',()=>{resetCreator();navigate('templates');});
   $('#resetCorners').addEventListener('click',()=>{state.creator.corners=[[.22,.20],[.78,.20],[.78,.80],[.22,.80]];drawCornerEditor();});
   $('#fitScene').addEventListener('click',drawCornerEditor);
