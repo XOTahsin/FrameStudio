@@ -1,4 +1,4 @@
-const CACHE_NAME = 'framestudio-v2-cache';
+const CACHE_NAME = 'framestudio-v3-cache';
 const APP_SHELL = [
   './','./index.html','./styles.css','./icons.js','./app.js','./db.js','./renderer.js','./detector.js','./zip.js','./manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png'
 ];
