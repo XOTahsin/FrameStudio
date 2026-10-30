@@ -35,7 +35,7 @@
         <button class="nav-item" data-page="help"><i data-icon="book-open"></i><span>Quick guide</span></button>
         <button class="nav-item" data-page="settings"><i data-icon="settings"></i><span>Settings</span></button>
       </nav>
-      <div class="sidebar-footer">FRAMESTUDIO <span>v1.1.0</span></div>
+      <div class="sidebar-footer">FRAMESTUDIO <span>v1.2.0</span></div>
     </aside>
 
     <main class="main-area">
@@ -129,11 +129,11 @@
             <div class="creator-main">
               <article class="panel creator-panel">
                 <div class="panel-heading"><div><div class="eyebrow">TEMPLATE SETUP</div><h2>Scenario background</h2><p>Upload a scene image that contains the frame you want to replace.</p></div><span class="panel-icon"><i data-icon="image"></i></span></div>
-                <label class="scene-drop" id="sceneDrop" for="sceneInput"><input type="file" id="sceneInput" accept="image/png,image/jpeg,image/webp" hidden /><i data-icon="image-plus"></i><strong id="sceneFileName">Upload scenario image</strong><span id="sceneFileHint">A clear, high-resolution scene works best · PNG, JPG, WEBP</span></label>
+                <label class="scene-drop" id="sceneDrop" for="sceneInput"><input type="file" id="sceneInput" accept="image/png,image/jpeg,image/jfif,.jfif,image/webp" hidden /><i data-icon="image-plus"></i><strong id="sceneFileName">Upload scenario image</strong><span id="sceneFileHint">A clear, high-resolution scene works best · PNG, JPG, WEBP</span></label>
                 <div class="editor-toolbar"><div><strong>Frame opening corners</strong><span>Drag each handle to the inner edge of the frame, clockwise from top-left.</span></div><div class="editor-tools"><button class="btn btn-secondary btn-small" id="autoDetectFrame" disabled><i data-icon="scan"></i> Auto-detect</button><button class="btn btn-ghost btn-small" id="resetCorners" disabled><i data-icon="rotate-ccw"></i> Reset</button><button class="btn btn-ghost btn-small" id="fitScene" disabled><i data-icon="maximize"></i> Fit view</button></div></div>
+                <div class="editor-hint" id="frameDetectStatus" aria-live="polite"><i data-icon="scan"></i><span>Upload a scene to attempt automatic frame detection. Always check the four handles and fine-tune them on the inner edge of the frame.</span></div>
                 <div class="corner-stage-wrap"><canvas id="cornerCanvas" width="1200" height="760" aria-label="Scenario image editor. Drag the four corner handles to match the inside of the frame."></canvas><div class="stage-empty" id="cornerEmpty"><i data-icon="scan"></i><strong>Your scene will appear here</strong><span>Upload a scenario image to mark the frame area.</span></div></div>
                 <div class="corner-legend"><span><b class="corner-dot dot-a">1</b> Top-left</span><span><b class="corner-dot dot-b">2</b> Top-right</span><span><b class="corner-dot dot-c">3</b> Bottom-right</span><span><b class="corner-dot dot-d">4</b> Bottom-left</span></div>
-                <div class="editor-hint" id="frameDetectStatus"><i data-icon="scan"></i><span>Upload a scene to attempt automatic frame detection. Always check the four handles and fine-tune them on the inner edge of the frame.</span></div>
               </article>
             </div>
             <aside class="creator-side">
