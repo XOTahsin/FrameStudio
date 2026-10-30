@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#101614" />
+  <meta name="description" content="FrameStudio — offline photo frame mockup generator with reusable templates, perspective mapping and batch export." />
+  <title>FrameStudio — Photo Mockup Generator</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-lockup">
+        <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+        <div><div class="brand-name">Frame<span>Studio</span></div><div class="brand-caption">MOCKUP WORKSPACE</div></div>
+      </div>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-page="dashboard"><i data-icon="grid"></i><span>Overview</span></button>
+        <button class="nav-item" data-page="templates"><i data-icon="layers"></i><span>Template library</span><b class="nav-count" id="templateCount">0</b></button>
+        <button class="nav-item" data-page="studio"><i data-icon="aperture"></i><span>Mockup studio</span></button>
+        <button class="nav-item" data-page="create"><i data-icon="plus-square"></i><span>Create template</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note">
+        <div class="note-icon"><i data-icon="hard-drive"></i></div>
+        <strong>Your files stay local</strong>
+        <p>Templates and artwork are stored in this browser on this device.</p>
+        <span class="local-status"><span class="status-dot"></span> LOCAL WORKSPACE</span>
+      </div>
+      <nav class="nav-list nav-bottom">
+        <button class="nav-item" data-page="help"><i data-icon="book-open"></i><span>Quick guide</span></button>
+        <button class="nav-item" data-page="settings"><i data-icon="settings"></i><span>Settings</span></button>
+      </nav>
+      <div class="sidebar-footer">FRAMESTUDIO <span>v1.0.0</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Toggle menu"><i data-icon="menu"></i></button>
+          <div class="breadcrumb"><span>Workspace</span><i data-icon="chevron-right"></i><strong id="pageCrumb">Overview</strong></div>
+        </div>
+        <div class="topbar-right">
+          <div class="offline-pill"><span class="status-dot"></span><span id="connectionLabel">Offline-ready</span></div>
+          <button class="icon-btn" id="quickHelp" title="Quick guide" aria-label="Quick guide"><i data-icon="circle-help"></i></button>
+          <div class="avatar">FS</div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <!-- DASHBOARD -->
+        <section class="page active" id="page-dashboard">
+          <div class="hero-row">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> YOUR CREATIVE WORKSPACE</div>
+              <h1>Make every frame<br/><em>look like the real thing.</em></h1>
+              <p class="hero-copy">Build reusable scenes once. Drop in new artwork anytime. Generate consistent, high-quality photo frame mockups — without generating a new scene with AI.</p>
+              <div class="hero-actions"><button class="btn btn-primary" data-goto="studio"><i data-icon="sparkles"></i> Create mockups</button><button class="btn btn-secondary" data-goto="create"><i data-icon="plus"></i> Add a scenario</button></div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <div class="hero-glow"></div><div class="hero-frame hero-frame-back"><div class="hero-frame-art art-two"></div></div><div class="hero-frame hero-frame-front"><div class="hero-frame-art art-one"></div><div class="reflection-shape"></div></div><div class="hero-caption">SCENE 01 <span>•</span> LIVING SPACE</div>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span>Saved scenarios</span><i data-icon="layers"></i></div><div class="stat-value" id="statTemplates">0</div><div class="stat-foot">Reusable mockup environments</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Mockups exported</span><i data-icon="image"></i></div><div class="stat-value" id="statExports">0</div><div class="stat-foot">This browser, all sessions</div></article>
+            <article class="stat-card"><div class="stat-top"><span>Storage used</span><i data-icon="database"></i></div><div class="stat-value" id="statStorage">—</div><div class="stat-foot">Estimated local template assets</div></article>
+          </div>
+          <div class="section-heading"><div><div class="eyebrow">GET STARTED</div><h2>Your production flow</h2></div><span class="section-subtitle">A simple repeatable process</span></div>
+          <div class="flow-grid">
+            <article class="flow-card"><div class="flow-number">01</div><div class="flow-icon"><i data-icon="image-plus"></i></div><h3>Add a scenario</h3><p>Upload a room or product scene and mark the four inner corners of its photo frame.</p><button class="text-action" data-goto="create">Create a template <i data-icon="arrow-up-right"></i></button></article>
+            <article class="flow-card"><div class="flow-number">02</div><div class="flow-icon"><i data-icon="sliders-horizontal"></i></div><h3>Prepare the layers</h3><p>Optionally add a transparent glass reflection or frame overlay to preserve the original look.</p><button class="text-action" data-goto="templates">Manage templates <i data-icon="arrow-up-right"></i></button></article>
+            <article class="flow-card"><div class="flow-number">03</div><div class="flow-icon"><i data-icon="wand-sparkles"></i></div><h3>Generate in batches</h3><p>Select an artwork, choose multiple saved scenes, then render and download them together.</p><button class="text-action" data-goto="studio">Open mockup studio <i data-icon="arrow-up-right"></i></button></article>
+          </div>
+          <div class="section-heading recent-heading"><div><div class="eyebrow">RECENTLY ADDED</div><h2>Your templates</h2></div><button class="text-action" data-goto="templates">View all <i data-icon="arrow-up-right"></i></button></div>
+          <div class="template-grid" id="dashboardTemplates"><div class="empty-state compact"><div class="empty-icon"><i data-icon="layout-template"></i></div><h3>Your first scenario starts here</h3><p>Add a room scene, set the frame corners, and save it as a reusable template.</p><button class="btn btn-secondary btn-small" data-goto="create">Create first template</button></div></div>
+        </section>
+
+        <!-- TEMPLATE LIBRARY -->
+        <section class="page" id="page-templates">
+          <div class="page-title-row"><div><div class="eyebrow">YOUR SCENE COLLECTION</div><h1>Template library</h1><p class="page-lead">Every scenario is a reusable production asset. Prepare it once, use it across unlimited artwork.</p></div><button class="btn btn-primary" data-goto="create"><i data-icon="plus"></i> New template</button></div>
+          <div class="toolbar"><div class="search-box"><i data-icon="search"></i><input id="templateSearch" type="search" placeholder="Search templates..." /></div><div class="toolbar-right"><span id="templateResults" class="muted-small">0 templates</span><button class="btn btn-ghost btn-small" id="importTemplateBtn"><i data-icon="upload"></i> Import</button><input type="file" id="importTemplateFile" accept=".framekit,.json,application/json" hidden /></div></div>
+          <div class="template-grid" id="templateGrid"><div class="empty-state"><div class="empty-icon"><i data-icon="images"></i></div><h3>No templates yet</h3><p>Create your first scenario template. You can also import a .framekit file shared from another workspace.</p><button class="btn btn-primary" data-goto="create">Create your first template</button></div></div>
+        </section>
+
+        <!-- STUDIO -->
+        <section class="page" id="page-studio">
+          <div class="page-title-row"><div><div class="eyebrow">BATCH PRODUCTION</div><h1>Mockup studio</h1><p class="page-lead">Choose your artwork and saved scenarios. FrameStudio handles perspective mapping and layer compositing locally.</p></div><div class="step-chip"><span>01</span> SELECT <i data-icon="chevron-right"></i> <span>02</span> RENDER <i data-icon="chevron-right"></i> <span>03</span> EXPORT</div></div>
+          <div class="studio-layout">
+            <div class="studio-main-col">
+              <article class="panel upload-panel">
+                <div class="panel-heading"><div><div class="eyebrow">STEP 01</div><h2>Choose your artwork</h2><p>Upload the print or photograph that will appear inside the frame.</p></div><span class="panel-icon"><i data-icon="image-plus"></i></span></div>
+                <label class="upload-drop" id="artworkDrop" for="artworkInput"><input type="file" id="artworkInput" accept="image/png,image/jpeg,image/webp" hidden /><span class="upload-symbol"><i data-icon="cloud-upload"></i></span><strong id="artworkFileName">Drop your artwork here</strong><span id="artworkFileHint">or click to browse · PNG, JPG, WEBP</span><span class="upload-footnote">Your original file is not modified.</span></label>
+                <div class="artwork-details hidden" id="artworkDetails"><div class="artwork-thumb" id="artworkThumb"></div><div class="artwork-meta"><strong id="artworkMetaName">Artwork</strong><span id="artworkMetaSize">—</span><span class="file-safe"><i data-icon="shield-check"></i> Original preserved</span></div><button class="icon-btn" id="removeArtwork" title="Remove artwork"><i data-icon="x"></i></button></div>
+              </article>
+              <article class="panel scenario-panel">
+                <div class="panel-heading"><div><div class="eyebrow">STEP 02</div><h2>Select scenarios</h2><p>Choose one or more saved environments for this artwork.</p></div><div class="selection-tools"><button class="text-action" id="selectAllTemplates">Select all</button><button class="text-action" id="clearTemplates">Clear</button></div></div>
+                <div class="scenario-select-grid" id="studioTemplateGrid"><div class="inline-empty">No saved scenarios yet. <button class="text-action" data-goto="create">Create a template</button> to begin.</div></div>
+              </article>
+              <article class="panel output-panel">
+                <div class="panel-heading"><div><div class="eyebrow">STEP 03</div><h2>Output settings</h2><p>Control image dimensions, file type and artwork fitting.</p></div><span class="panel-icon"><i data-icon="settings-2"></i></span></div>
+                <div class="settings-grid">
+                  <label class="field"><span>Output resolution</span><select id="resolutionSelect"><option value="native">Template's original size</option><option value="2048">2048 px wide</option><option value="3000" selected>3000 px wide</option><option value="4000">4000 px wide</option><option value="custom">Custom width</option></select></label>
+                  <label class="field hidden" id="customWidthWrap"><span>Custom width (px)</span><input type="number" id="customWidth" min="500" max="8000" value="3000" /></label>
+                  <label class="field"><span>Artwork fitting</span><select id="fitMode"><option value="cover" selected>Cover — fill frame</option><option value="stretch">Stretch — fill exactly</option></select></label>
+                  <label class="field"><span>Export format</span><select id="exportFormat"><option value="image/png">PNG — lossless</option><option value="image/jpeg">JPEG — smaller file</option></select></label>
+                  <label class="field" id="qualityWrap"><span>JPEG quality <b id="qualityValue">92%</b></span><input type="range" id="jpegQuality" min="60" max="100" value="92" /></label>
+                  <label class="field"><span>Reflection strength</span><div class="range-inline"><input type="range" id="reflectionStrength" min="0" max="150" value="100" /><b id="reflectionValue">100%</b></div></label>
+                </div>
+                <div class="render-actions"><div class="render-info"><i data-icon="cpu"></i><span>Rendered locally in your browser. No artwork upload to a server.</span></div><button class="btn btn-primary btn-large" id="generateBtn" disabled><i data-icon="sparkles"></i> Generate mockups <span id="generateCount">(0)</span></button></div>
+              </article>
+            </div>
+            <aside class="studio-side-col">
+              <article class="panel preview-panel"><div class="panel-heading small"><div><div class="eyebrow">LIVE PREVIEW</div><h3>Artwork preview</h3></div><span class="live-dot">LIVE</span></div><div class="preview-stage" id="studioPreview"><div class="preview-placeholder"><i data-icon="scan-eye"></i><span>Your mockup preview will appear here</span></div></div><div class="preview-caption" id="previewCaption">Select an artwork and a scenario to preview.</div></article>
+              <article class="panel tips-panel"><div class="tip-title"><i data-icon="lightbulb"></i> Pro tip</div><p>For the most realistic glass effect, prepare a transparent PNG reflection overlay at the same dimensions as your scenario image. Upload it in the template editor.</p><button class="text-action" data-goto="help">Read the reflection guide <i data-icon="arrow-up-right"></i></button></article>
+            </aside>
+          </div>
+          <div class="results-section hidden" id="resultsSection"><div class="section-heading"><div><div class="eyebrow">RENDER COMPLETE</div><h2>Your generated mockups</h2><p class="page-lead" id="resultsSummary">—</p></div><div class="results-actions"><button class="btn btn-primary" id="downloadZip"><i data-icon="file-archive"></i> Download ZIP</button></div></div><div class="progress-wrap hidden" id="progressWrap"><div class="progress-top"><span id="progressLabel">Rendering…</span><b id="progressPercent">0%</b></div><div class="progress-track"><span id="progressBar"></span></div></div><div class="results-grid" id="resultsGrid"></div></div>
+        </section>
+
+        <!-- CREATE TEMPLATE -->
+        <section class="page" id="page-create">
+          <div class="page-title-row"><div><div class="eyebrow">BUILD ONCE · REUSE FOREVER</div><h1>Create a scenario</h1><p class="page-lead">Prepare the frame opening on a background scene. This setup is saved locally as a reusable template.</p></div><div class="step-chip"><span>01</span> SCENE <i data-icon="chevron-right"></i> <span>02</span> CORNERS <i data-icon="chevron-right"></i> <span>03</span> LAYERS</div></div>
+          <div class="creator-layout">
+            <div class="creator-main">
+              <article class="panel creator-panel">
+                <div class="panel-heading"><div><div class="eyebrow">TEMPLATE SETUP</div><h2>Scenario background</h2><p>Upload a scene image that contains the frame you want to replace.</p></div><span class="panel-icon"><i data-icon="image"></i></span></div>
+                <label class="scene-drop" id="sceneDrop" for="sceneInput"><input type="file" id="sceneInput" accept="image/png,image/jpeg,image/webp" hidden /><i data-icon="image-plus"></i><strong id="sceneFileName">Upload scenario image</strong><span id="sceneFileHint">A clear, high-resolution scene works best · PNG, JPG, WEBP</span></label>
+                <div class="editor-toolbar"><div><strong>Frame opening corners</strong><span>Drag each handle to the inner edge of the frame, clockwise from top-left.</span></div><div class="editor-tools"><button class="btn btn-ghost btn-small" id="resetCorners" disabled><i data-icon="rotate-ccw"></i> Reset</button><button class="btn btn-ghost btn-small" id="fitScene" disabled><i data-icon="maximize"></i> Fit view</button></div></div>
+                <div class="corner-stage-wrap"><canvas id="cornerCanvas" width="1200" height="760" aria-label="Scenario image editor. Drag the four corner handles to match the inside of the frame."></canvas><div class="stage-empty" id="cornerEmpty"><i data-icon="scan"></i><strong>Your scene will appear here</strong><span>Upload a scenario image to mark the frame area.</span></div></div>
+                <div class="corner-legend"><span><b class="corner-dot dot-a">1</b> Top-left</span><span><b class="corner-dot dot-b">2</b> Top-right</span><span><b class="corner-dot dot-c">3</b> Bottom-right</span><span><b class="corner-dot dot-d">4</b> Bottom-left</span></div>
+                <div class="editor-hint"><i data-icon="info"></i><span>Place points on the <strong>inner edge</strong> of the frame, not on the outside border. The artwork is warped to fit the four points.</span></div>
+              </article>
+            </div>
+            <aside class="creator-side">
+              <article class="panel template-details-panel"><div class="panel-heading small"><div><div class="eyebrow">01 / DETAILS</div><h3>Template details</h3></div></div><label class="field"><span>Scenario name</span><input id="templateName" type="text" placeholder="e.g. Modern living room" maxlength="60" /></label><label class="field"><span>Category</span><select id="templateCategory"><option>Living room</option><option>Bedroom</option><option>Office</option><option>Tabletop</option><option>Gallery wall</option><option>Close-up</option><option>Outdoor</option><option>Other</option></select></label><label class="field"><span>Notes (optional)</span><textarea id="templateNotes" rows="3" placeholder="Frame material, angle, lighting notes…"></textarea></label></article>
+              <article class="panel layers-panel"><div class="panel-heading small"><div><div class="eyebrow">02 / REALISM LAYERS</div><h3>Glass & frame overlays</h3></div></div><div class="layer-upload"><div class="layer-info"><span class="layer-icon"><i data-icon="sun"></i></span><div><strong>Glass reflection</strong><small>Transparent PNG recommended</small></div></div><label class="file-pick" for="reflectionInput" id="reflectionPick">Add overlay <i data-icon="plus"></i></label><input type="file" id="reflectionInput" accept="image/png,image/webp" hidden /><div class="layer-file hidden" id="reflectionFileRow"><span id="reflectionFileName">reflection.png</span><button class="icon-btn tiny" id="removeReflection" aria-label="Remove reflection"><i data-icon="x"></i></button></div></div><div class="layer-upload"><div class="layer-info"><span class="layer-icon"><i data-icon="frame"></i></span><div><strong>Frame foreground</strong><small>Optional transparent frame rim PNG</small></div></div><label class="file-pick" for="frameOverlayInput" id="frameOverlayPick">Add overlay <i data-icon="plus"></i></label><input type="file" id="frameOverlayInput" accept="image/png,image/webp" hidden /><div class="layer-file hidden" id="frameOverlayFileRow"><span id="frameOverlayFileName">frame.png</span><button class="icon-btn tiny" id="removeFrameOverlay" aria-label="Remove frame overlay"><i data-icon="x"></i></button></div></div><label class="field"><span>Reflection blend mode</span><select id="reflectionBlend"><option value="screen">Screen — natural glass glare</option><option value="soft-light">Soft Light — subtle sheen</option><option value="overlay">Overlay — stronger contrast</option><option value="lighten">Lighten — preserve highlights</option></select></label><label class="field"><span>Default reflection opacity <b id="reflectionOpacityLabel">55%</b></span><input type="range" id="reflectionOpacity" min="0" max="100" value="55" /></label><div class="callout warning-callout"><i data-icon="alert-circle"></i><p><strong>About existing reflections</strong>Reflections baked into a flattened photo cannot always be cleanly separated from its old artwork. Add a separate transparent reflection PNG for consistent results on every new design.</p></div></article>
+              <div class="creator-save"><button class="btn btn-primary btn-large full-width" id="saveTemplateBtn" disabled><i data-icon="save"></i> Save scenario template</button><button class="btn btn-ghost full-width" id="cancelTemplateBtn">Cancel</button></div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- HELP -->
+        <section class="page" id="page-help">
+          <div class="page-title-row"><div><div class="eyebrow">LEARN THE WORKFLOW</div><h1>Quick guide</h1><p class="page-lead">A practical guide to preparing reliable, repeatable photo frame mockups.</p></div></div>
+          <div class="guide-grid">
+            <article class="panel guide-card"><div class="guide-number">01</div><div class="guide-icon"><i data-icon="layout-template"></i></div><h2>Prepare a scenario template</h2><p>Use a sharp, well-lit photo with a visible frame. Upload it, name the scenario, then drag the four numbered handles to the inside corners of the frame opening. Save the template.</p><ul><li>Mark the inner artwork area, not the outer frame edge.</li><li>Keep the point order clockwise: top-left, top-right, bottom-right, bottom-left.</li><li>Use the same scenario image and pixel dimensions for every render.</li></ul></article>
+            <article class="panel guide-card"><div class="guide-number">02</div><div class="guide-icon"><i data-icon="sun"></i></div><h2>Preserve glass reflection</h2><p>For a convincing glass effect, add a transparent PNG reflection overlay that matches the full scene dimensions. Bright reflection pixels should be visible; the rest should be transparent.</p><ul><li>Use a separate overlay exported from your layered design source when possible.</li><li>Choose Screen for bright glare, Soft Light for a subtle sheen.</li><li>Keep reflection opacity modest and consistent across products.</li></ul><div class="callout warning-callout"><i data-icon="info"></i><p>FrameStudio does not claim to perfectly extract reflections from every flattened image. If reflection and old artwork are merged, clean separation may require manual masking in an image editor.</p></div></article>
+            <article class="panel guide-card"><div class="guide-number">03</div><div class="guide-icon"><i data-icon="aperture"></i></div><h2>Generate your mockups</h2><p>In Mockup Studio, upload your new artwork, tick the scenarios you need and press Generate. The image is perspective-warped into each saved quadrilateral.</p><ul><li>Cover crops artwork to fill the frame's aspect ratio.</li><li>Stretch uses the full artwork and can distort it.</li><li>Render at the scene's native size or choose a larger output width.</li></ul></article>
+            <article class="panel guide-card"><div class="guide-number">04</div><div class="guide-icon"><i data-icon="folder-down"></i></div><h2>Back up your templates</h2><p>Templates are stored in this browser's local database. Export important templates as .framekit files and keep a backup alongside your original scene and overlay assets.</p><ul><li>Use Export in the template library to create a portable template file.</li><li>Import .framekit files on another device or browser.</li><li>Clearing browser data can remove locally stored templates.</li></ul></article>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="page" id="page-settings">
+          <div class="page-title-row"><div><div class="eyebrow">WORKSPACE PREFERENCES</div><h1>Settings</h1><p class="page-lead">Manage local data, backups and application preferences.</p></div></div>
+          <div class="settings-page-grid">
+            <article class="panel settings-card"><div class="settings-card-icon"><i data-icon="hard-drive"></i></div><h2>Local storage</h2><p>Templates and uploaded overlay assets are stored in IndexedDB on this device. Artwork selected in the Studio is processed in memory and is not saved automatically.</p><div class="storage-meter"><div><span>Estimated template storage</span><strong id="settingsStorage">—</strong></div><div class="meter-track"><span id="storageMeterBar"></span></div></div><button class="btn btn-secondary" id="refreshStorage"><i data-icon="refresh-cw"></i> Refresh estimate</button></article>
+            <article class="panel settings-card"><div class="settings-card-icon"><i data-icon="download"></i></div><h2>Backup templates</h2><p>Export each template as a portable .framekit file. Keep your backups in a safe location or commit them to a private GitHub repository if appropriate.</p><button class="btn btn-secondary" data-goto="templates"><i data-icon="layers"></i> Open template library</button></article>
+            <article class="panel settings-card danger-card"><div class="settings-card-icon"><i data-icon="trash-2"></i></div><h2>Clear local workspace</h2><p>This permanently deletes all saved templates and their locally stored assets from this browser. Export backups before continuing.</p><button class="btn btn-danger" id="clearWorkspaceBtn"><i data-icon="trash-2"></i> Delete all local templates</button></article>
+            <article class="panel settings-card"><div class="settings-card-icon"><i data-icon="info"></i></div><h2>About FrameStudio</h2><p>FrameStudio 1.0.0 is a browser-based, offline-first mockup compositor. It uses the Canvas API and a local perspective mesh renderer. No AI API or account is required.</p><div class="about-meta"><span>Version <b>1.0.0</b></span><span>Mode <b>Local-first PWA</b></span><span>Dependencies <b>None</b></span></div></article>
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer"><span>© 2026 FrameStudio</span><span>DESIGNED FOR REPEATABLE MOCKUP PRODUCTION</span><span><span class="status-dot"></span> YOUR WORK STAYS ON THIS DEVICE</span></footer>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <div class="modal-backdrop hidden" id="confirmModal"><div class="modal"><div class="modal-icon"><i data-icon="alert-triangle"></i></div><h2 id="modalTitle">Are you sure?</h2><p id="modalText">This action cannot be undone.</p><div class="modal-actions"><button class="btn btn-ghost" id="modalCancel">Cancel</button><button class="btn btn-danger" id="modalConfirm">Continue</button></div></div></div>
+  <script src="icons.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
