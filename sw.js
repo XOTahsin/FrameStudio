@@ -1,6 +1,6 @@
-const CACHE_NAME = 'framestudio-v1-cache';
+const CACHE_NAME = 'framestudio-v2-cache';
 const APP_SHELL = [
-  './','./index.html','./styles.css','./icons.js','./app.js','./db.js','./renderer.js','./zip.js','./manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png'
+  './','./index.html','./styles.css','./icons.js','./app.js','./db.js','./renderer.js','./detector.js','./zip.js','./manifest.webmanifest','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
